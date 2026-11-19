@@ -1,50 +1,36 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# ContosoDashboard Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Training-Only Scope
+ContosoDashboard is an educational application, not a production reference or supported product. Changes MUST preserve that scope, MUST NOT imply that mock authentication or other training shortcuts are production-ready, and MUST document material limitations introduced by a feature.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Offline-First Operation
+The training application MUST remain usable locally without requiring cloud services or external service accounts. When infrastructure needs a replaceable implementation, application logic SHOULD depend on an abstraction so local training implementations remain practical.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Layered Architecture
+User interface, business services, domain models, and data access MUST remain separated according to the existing project structure. New behavior SHOULD use dependency injection and existing service boundaries rather than embedding persistence or business rules in UI components.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Authorization Boundaries
+Protected functionality MUST enforce authentication and role requirements, and access to user- or project-scoped data MUST verify resource ownership or membership. Authorization MUST be enforced at the service/data boundary as well as in the UI; hiding a page or control alone is insufficient.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Simplicity and Clarity
+Changes MUST favor focused, maintainable solutions over unnecessary complexity. User-visible behavior and known limitations MUST be documented where relevant, and changes MUST be validated with the narrowest applicable build or test checks.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Additional Constraints
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- Keep local training setup independent of cloud credentials and subscriptions.
+- Preserve the separation between Blazor pages, application services, models, and Entity Framework Core data access.
+- Do not describe mock authentication, local-only infrastructure, or training security controls as production-ready.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- New features MUST identify their user-facing behavior and relevant authorization boundary before implementation.
+- Changes to data access MUST preserve the service-layer authorization checks applicable to the affected resource.
+- Build and run the relevant tests or checks before considering implementation complete; report any remaining warnings or limitations.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Maintainers may amend this constitution when they document the rationale and update the version and amendment date. This constitution guides feature specifications, plans, implementation, and reviews. Conflicts MUST be resolved by updating the conflicting artifact or documenting an approved, scoped exception; principles MUST NOT be silently ignored.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-11-19 | **Last Amended**: 2026-11-19
