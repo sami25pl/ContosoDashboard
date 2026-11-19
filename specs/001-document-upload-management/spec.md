@@ -26,7 +26,7 @@ An employee selects one or more work documents, provides required metadata, assi
 1. **Given** an authenticated employee has selected a supported file no larger than 25 MB, **When** the employee provides a title and category and confirms the upload, **Then** the system displays progress, stores the document securely, and shows the document in My Documents.
 2. **Given** an authenticated employee selects multiple supported files, **When** the employee submits the files with shared or individual metadata, **Then** each valid file is uploaded and success or error status is reported for the applicable file.
 3. **Given** an employee selects an unsupported file or a file larger than 25 MB, **When** the employee submits the upload, **Then** the system rejects the file and explains the type or size requirement without storing the file.
-4. **Given** a document is being uploaded, **When** malware or virus scanning fails or detects a threat, **Then** the document is rejected and no accessible document record or stored file is created.
+4. **Given** a document is being uploaded, **When** malware or virus scanning fails or detects a threat, **Then** the document remains unavailable, the result is recorded, and the stored file is quarantined or removed.
 
 ---
 
@@ -116,7 +116,7 @@ Users see recent documents and document counts on the dashboard. Administrators 
 - **FR-002**: System MUST accept PDF, Microsoft Word, Excel, PowerPoint, text, JPEG, and PNG files.
 - **FR-003**: System MUST reject individual files larger than 25 MB and explain the applicable size limit.
 - **FR-004**: System MUST reject unsupported file types before creating a document record or stored file.
-- **FR-005**: System MUST scan uploaded files for viruses or malware before making a document available.
+- **FR-005**: System MUST enqueue uploaded files for asynchronous virus or malware scanning with Azure Functions and Queue Storage, and MUST NOT make a document available until the scan result is clean.
 - **FR-006**: System MUST require a document title and category for each upload.
 - **FR-007**: System MUST accept an optional description, associated project, and custom tags.
 - **FR-008**: System MUST capture upload date and time, uploader, file size, and MIME type for every stored document.
@@ -146,7 +146,7 @@ Users see recent documents and document counts on the dashboard. Administrators 
 - **FR-032**: System MUST record uploads, downloads, deletions, and share actions with the responsible user and time.
 - **FR-033**: System MUST allow Administrators to generate reports for document types, active uploaders, and document access patterns.
 - **FR-034**: System MUST enforce the existing role and project membership authorization model for every document operation.
-- **FR-035**: System MUST operate without cloud services and preserve an abstraction that can use a replaceable file-storage implementation.
+- **FR-035**: System MUST preserve local/offline operation for document metadata and storage; Azure Queue Storage/Azure Functions may be the production-style asynchronous scanner implementation, with a local/Azurite adapter and replaceable storage/scanner abstractions.
 - **FR-036**: System MUST keep document identity and existing user or project identity fields as integer keys and store category values as text.
 
 ### Key Entities *(include if feature involves data)*
@@ -163,7 +163,7 @@ Users see recent documents and document counts on the dashboard. Administrators 
 - The existing mock authentication and role model supplies the NameIdentifier, Name, Email, Role, and Department claims required for authorization.
 - Local disk storage is available and is sufficient for the training deployment.
 - Supported documents do not require storage quotas in this release.
-- Malicious-file scanning is required as a pre-storage security check; the approved scanner integration is an implementation detail.
+- Malicious-file scanning is performed asynchronously after upload. Azure Functions with an Azure Queue Storage trigger processes the scan job; Local/Azurite queue infrastructure may be used locally. Pending, failed, and threatening files remain inaccessible.
 - In-app notifications use the existing notification mechanism.
 - The initial web interface is the only supported interface.
 
