@@ -5,6 +5,12 @@
 **Status**: Draft
 **Input**: Stakeholder requirements in `StakeholderDocs/document-upload-and-management-feature.md`
 
+## Clarifications
+
+### Session 2026-11-19
+
+- Q: What document actions are available to recipients, and who may manage or share a shared document? → A: Recipients may view and download shared documents. Only the document owner may reshare, edit, replace, or delete the document.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Upload and Organize Documents (Priority: P1)
@@ -43,19 +49,18 @@ An employee searches or browses documents in My Documents or within an associate
 
 ### User Story 3 - Manage Metadata and Document Versions (Priority: P2)
 
-The employee who uploaded a document or an authorized project manager can update metadata and manage the document lifecycle. A document owner can replace a file, while deletion requires confirmation and is restricted to authorized users.
+The document owner can update metadata, replace the file, or delete the document after confirmation. Project managers and other recipients may not edit, replace, reshare, or delete documents they do not own.
 
 **Why this priority**: Document ownership and project-level management keep centralized records accurate while preventing unauthorized changes or loss.
 
-**Independent Test**: Upload a document, edit its title and tags, replace the file, and confirm deletion by an authorized owner; verify that unauthorized users cannot perform these actions.
+**Independent Test**: Upload a document, edit its title and tags, replace the file, and confirm deletion by the owner; verify that project managers and recipients who do not own it cannot perform these actions.
 
 **Acceptance Scenarios**:
 
-1. **Given** an employee is the uploader, **When** the employee edits the title, description, category, tags, or associated project, **Then** the metadata is updated and the change is visible in document views.
-2. **Given** an uploader or authorized project manager selects replacement, **When** a valid updated file is provided, **Then** the document is replaced while preserving its authorized document record and metadata.
-3. **Given** an employee requests deletion of an uploaded document, **When** the employee confirms deletion, **Then** the document and its stored file are permanently removed.
-4. **Given** a project manager requests deletion of a project document, **When** the project manager confirms deletion, **Then** the document and its stored file are permanently removed.
-5. **Given** an unauthorized user attempts edit or delete, **When** the action is submitted, **Then** the system denies it and does not change the document.
+1. **Given** the employee is the document owner, **When** the owner edits the title, description, category, tags, or associated project, **Then** the metadata is updated and the change is visible in document views.
+2. **Given** the document owner selects replacement, **When** a valid updated file is provided, **Then** the document is replaced while preserving its authorized document record and metadata.
+3. **Given** the document owner requests deletion of an uploaded document, **When** the owner confirms deletion, **Then** the document and its stored file are permanently removed.
+4. **Given** an unauthorized user attempts edit or delete, **When** the action is submitted, **Then** the system denies it and does not change the document.
 
 ---
 
@@ -70,7 +75,7 @@ An authorized document owner shares a document with specific users or teams. Rec
 **Acceptance Scenarios**:
 
 1. **Given** an authorized owner selects users or teams, **When** sharing is confirmed, **Then** the document becomes visible to recipients in Shared with Me and recipients receive in-app notifications.
-2. **Given** a recipient has a document explicitly shared with them, **When** the recipient searches or browses allowed documents, **Then** the shared document is available in accordance with the owner's sharing action.
+2. **Given** a recipient has a document explicitly shared with them, **When** the recipient searches or browses allowed documents, **Then** the recipient can view or download the shared document but cannot reshare, edit, replace, or delete it.
 3. **Given** a user is viewing an authorized task, **When** the user attaches an existing document or uploads a new one, **Then** the document is associated with the task and its project.
 
 ---
@@ -123,14 +128,14 @@ Users see recent documents and document counts on the dashboard. Administrators 
 - **FR-014**: System MUST allow My Documents to be sorted by title, upload date, category, and file size.
 - **FR-015**: System MUST allow My Documents to be filtered by category, associated project, and date range.
 - **FR-016**: System MUST show all associated documents to authorized members of a project.
-- **FR-017**: System MUST allow Project Managers to upload and manage documents for projects they manage.
+- **FR-017**: System MUST allow Project Managers to upload documents for projects they manage.
 - **FR-018**: System MUST search by title, description, tags, uploader name, and associated project and return authorized matches.
 - **FR-019**: System MUST prevent search or browse results from exposing documents outside the current user's authorization.
-- **FR-020**: System MUST allow authorized users to download documents and preview supported PDF and image files in the browser.
-- **FR-021**: System MUST allow a document uploader to edit title, description, category, tags, and replace the file.
+- **FR-020**: System MUST allow authorized users, including recipients of shared documents, to download documents and preview supported PDF and image files in the browser.
+- **FR-021**: System MUST allow only the document owner to edit the title, description, category, tags, or associated project and replace the file.
 - **FR-022**: System MUST allow a document owner to delete an uploaded document only after confirmation.
-- **FR-023**: System MUST allow Project Managers to delete documents associated with their projects after confirmation.
-- **FR-024**: System MUST allow document owners to share documents with specific users or teams.
+- **FR-023**: System MUST deny deletion of a document to every user other than the document owner.
+- **FR-024**: System MUST allow only document owners to share or reshare documents with specific users or teams.
 - **FR-025**: System MUST notify recipients in-app when a document is shared with them.
 - **FR-026**: System MUST show documents shared with the current recipient in a Shared with Me view.
 - **FR-027**: System MUST allow authorized users to attach existing documents to tasks or upload new documents from task detail pages.
